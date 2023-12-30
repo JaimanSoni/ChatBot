@@ -1,0 +1,62 @@
+{% extends 'chatBase.html'%}
+{% block start %}
+
+    <nav class="navbar navbar-dark bg-dark justify-content-between" style="height: 80px; padding: 0px 40px 0px 40px; color:white;">
+        <a  class="navbar-brand">Chatbot</a>
+        <form class="form-inline">
+            <a href="/account" class="navbar-brand mx-5">{{user.first_name}}</a>
+            <a href="/logout" class="btn btn-light">Logout</a>
+        </form>
+    </nav>
+    
+    <div class="container mx-auto" style="position: absolute; bottom:2px; left:7%;">
+        <form class="form-inline my-2 my-lg-0" method="POST" style="width:100%;">
+                {% csrf_token %}
+            <input class="form-control mr-sm-2" style="width:90%; height:50px; background-color: transparent; border:1px solid gray;" name="message" type="text" placeholder="Enter your prompt here" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" style="height:50px; width:100px;" type="submit">Generate</button>
+        </form>
+        <p class="text-center my-3"> ChatBot can make mistakes. Consider checking important information. </p>
+    </div>
+
+<div class="container my-4" style="overflow: scroll; height:475px;">
+
+    {% if chats|length > 0 %}
+
+        {% for chat in chats reversed %}
+
+            <div class="card mx-auto" style="width:90%; box-shadow: 0px 0px 10px 1px #d1cfcf; margin-bottom: 20px;">
+                <div class="card-header">
+                    {{user.first_name}}
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p> {{chat.question}} </p>
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="card mx-auto" style="width:90%; box-shadow: 0px 0px 10px 1px #d1cfcf; margin-bottom: 50px;">
+                <div class="card-header">
+                    Chatbot
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p> {{chat.answer}} </p>
+                    </blockquote>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <blockquote class="blockquote mb-0 text-center" style="margin-top: 110px;">
+            <h2 style="margin-bottom: 20px;"> Hey {{user.first_name}}, </h2>
+            <h1> How can I help you today? </h1>
+        </blockquote>
+
+    {% endif %}
+
+  </div>
+
+{% endblock %}
